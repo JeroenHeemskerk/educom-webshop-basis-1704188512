@@ -7,8 +7,63 @@
 			<li><a href="about.html">ABOUT</a></li>
 			<li><a href="contact.html">CONTACT</a></li>
 		</ul>
+
+		<form>
+		
+			<label for="aanhef">Kies uw aanhef:</label>
+			
+			<select name="aanhef" id="aanhef">
+				<option value="Dhr.">Dhr.</option>
+				<option value="Mvr.">Mvr.</option>
+				<option value="Dr.">Dr.</option>
+				<option value="Prof.">Prof.</option>
+			</select><br>
+			
+			<label for="naam">Naam:</label><br>
+			<input type="text" id="naam" name="naam"><br>
+			
+			<label for="email">Email:</label><br>
+			<input type="text" id="email" name="email"><br>
+			
+			<label for="tel">Tel. nr.:</label><br>
+			<input type="text" id="tel" name="tel"><br>
+			
+			<p>Adres</p>
+			<label for="straat">Straat:</label><br>
+			<input type="text" id="straat" name="straat"><br>
+			
+			<label for="str nr">Nr. + Toevoeging:</label><br>
+			<input type="text" id="str nr" name="str nr"><br>
+			
+			<label for="postcode">Postcode:</label><br>
+			<input type="text" id="postcode" name="postcode"><br>
+	  
+			<label for="plaats">Woonplaats:</label><br>
+			<input type="text" id="plaats" name="plaats"><br>
+			
+			<br>
+			
+			<label for="voorkeur">Communicatie Voorkeur</label><br>
+			<input type="radio" id="email" name="voorkeur" value="email">
+			<label for="email">Email</label><br>
+			<input type="radio" id="tel" name="voorkeur" value="tel">
+			<label for="tel">Telefoon</label><br>
+			<input type="radio" id="post" name="voorkeur" value="post">
+			<label for="post">Post</label><br>
+			
+			<br>
+			
+			<label for="bericht">Bericht</label><br>
+			<textarea name="message" rows="10" cols="30">Vul in waar u contact over wil nemen.</textarea><br>
+			
+			<br>
+			
+			<input type="submit" value="Verstuur">
+		</form>
+		
+
 	</body>
-	
+
 	<footer>
 		<p>&#169 2024, Thomas van Haastrecht</p>
 	</footer> 
