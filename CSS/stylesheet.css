@@ -33,7 +33,7 @@ ul.menu li {
 	padding: 4px 8px;
 }
 
-ul li a {
+ul.menu li a {
 	color: white;
 	text-decoration: none;
 }
