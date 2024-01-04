@@ -56,20 +56,30 @@ input[type=submit] {
 	color: #444444;
 }
 
-div.inputfield {
-	display: block;
-	width: 550px;
-	height: 30px;
+div.inputfield > label {
+	display: inline-block;
+	float: left;
+	clear: left;
+	width: 150px;
 }
 
 div.inputfield > input {
-	float: right;
-	margin-left: auto;
-	margin-right: auto;
+	display: inline-block;
+	float: left;
 	width: 400px;
+}
+div.inputfield > .error {
+	display: inline-block;
+	margin-left: 5px;
+	float: left;
+	width: 180px;
 }
 
 textarea {
 	width: 400px;
 	color: #444444;
+}
+
+.error {
+	color: red;
 }
