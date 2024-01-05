@@ -10,11 +10,9 @@
 			$titleErr = $nameErr = $messageErr = $emailErr = $phoneErr = $preferenceErr = $addressErr = '';
 			$valid = false;
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-				$valid = true;
 				//check title
 				if (empty($_POST["title"])) {
 					$titleErr = "Kies een aanhef";
-					$valid = false;
 				} else {
 					$title = $_POST["title"];
 				}
@@ -22,18 +20,15 @@
 				//check name (only allow letters, spaces, dashes and apostrophes)
 				if (empty($_POST["name"])) {
 					$nameErr = "Vul uw naam in";
-					$valid = false;
 				} else {
 					$name = $_POST["name"];
 					if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {
 						$nameErr= "Alleen letters, streepjes en apostrophen zijn toegestaan	";
-						$valid = false;
 					}
 				}
 				//check message
 				if (empty($_POST["message"])) {
 					$messageErr = "Vul een bericht in";
-					$valid = false;
 				} else {
 					$message = $_POST["message"];
 				}
@@ -42,7 +37,6 @@
 				//check preference
 				if (empty($_POST["preference"])) {
 					$preferenceErr = "Vul in hoe we met u contact op kunnen nemen";
-					$valid = false;
 				} else {
 					$preference = $_POST["preference"];
 					if ($preference == "post" || !empty($_POST["street"]) || !empty($_POST["street_no"]) || !empty($_POST["postcode"]) || !empty($_POST["city"]) )  {
@@ -63,7 +57,6 @@
 				if ($address_required) {	
 					if (address_check($address_street, $address_street_no, $address_postcode, $address_city) != 1) {
 						$addressErr = "Vul een geldig adres in";
-						$valid = false;
 					}
 				}
 				
@@ -72,10 +65,8 @@
 				if ($email_required) {
 					if (empty($email)) {
 						$emailErr = "Vul uw email in";
-						$valid = false;
 					} else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 						$emailErr = "ongeldig email";
-						$valid = false;
 					}
 				}
 				
@@ -83,12 +74,13 @@
 				if ($phone_required) {
 					if (empty($phone)) {
 						$phoneErr = "Vul uw telefoon nummer in";
-						$valid = false;
 					} else if (!is_numeric($phone)) {
 						$phoneErr = "Ongeldig nummer";
-						$valid = false;
 					}
 				}
+				
+				//update valid boolean after all error checking
+				$valid = empty($titleErr) && empty($nameErr) && empty($messageErr) && empty($emailErr) && empty($phoneErr) && empty($preferenceErr) && empty($addressErr);
 			}
 			
 			//function to check if an address is valid or empty (invalid=-1, empty=0, valid=1)
@@ -194,7 +186,7 @@
 				<br>
 				
 				<label for="message">Bericht</label> <span class="error"><?php echo $messageErr; ?></span><br>
-				<textarea name="message" placeholder="Vul in waar u contact over wil nemen." rows="10" cols="30"></textarea><br>
+				<textarea name="message" placeholder="Vul in waar u contact over wil nemen." rows="10" cols="30"><?php echo $message; ?></textarea><br>
 				<br>
 				
 				<input type="submit" value="Verstuur">
