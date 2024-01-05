@@ -49,11 +49,21 @@
 						$phone_required = true;
 					}
 				}
+
 				
 				$address_street = $_POST["street"];
 				$address_street_no = $_POST["street_no"];
 				$address_postcode = $_POST["postcode"];
 				$address_city = $_POST["city"];
+
+
+				if (empty($address_postcode)) {
+                                    if ($addres_required) {
+                                        $postcodeErr = "vul een postcode in";
+				    }
+				} elseif (strlen($postcode) != 6 || !is_numeric(substr($postcode, 0, 4)) || !preg_match("/^[a-zA-Z]{2}$/",substr($postcode, 4, 2))) {
+                                    $postcodeErr = "vul een geldige Nederlandse postcode in";
+				}
 				if ($address_required) {	
 					if (address_check($address_street, $address_street_no, $address_postcode, $address_city) != 1) {
 						$addressErr = "Vul een geldig adres in";
