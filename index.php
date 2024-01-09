@@ -75,6 +75,10 @@
                 require_once('contact.php');
                 $pageName = $header;
                 break;
+            case 'register':
+                require_once('register.php');
+                $pageName = $header;
+                break;
             default:
                 $pageName = '404: Page Not Found';
         }
@@ -86,6 +90,7 @@
         echo '        <li><a href="index.php?page=home">HOME</a></li>' . PHP_EOL;
         echo '        <li><a href="index.php?page=about">ABOUT</a></li>' . PHP_EOL;
         echo '        <li><a href="index.php?page=contact">CONTACT</a></li>' . PHP_EOL;
+        echo '        <li><a href="index.php?page=register">REGISTER</a></li>' . PHP_EOL;
         echo '    </ul>' . PHP_EOL;
     } 
 
@@ -104,6 +109,9 @@
                 require_once('contact.php');
                 showContactContent();
                 break;
+            case 'register':
+                require_once('register.php');
+                showRegisterContent();
             default:
                 //require('404.php');
         }     
