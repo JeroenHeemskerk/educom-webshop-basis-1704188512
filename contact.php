@@ -199,7 +199,7 @@
             }
             
             //update valid boolean after all error checking
-            $valid = empty($titleErr) && empty($nameErr) && empty($messageErr) && empty($emailErr) && empty($phoneErr) && empty($preferenceErr) && empty($addressErr);
+            $valid = empty($titleErr) && empty($nameErr) && empty($messageErr) && empty($emailErr) && empty($phoneErr) && empty($preferenceErr) && empty($streetErr) && empty($street_noErr) && empty($postcodeErr) && empty($cityErr);
         }
         $vals_and_errs = array('valid'=>$valid, 'title'=>$title, 'name'=>$name, 'message'=>$message, 'email'=>$email, 'phone'=>$phone, 'preference'=>$preference,
                                'address_street'=>$address_street, 'address_street_no'=>$address_street_no, 'address_postcode'=>$address_postcode, 'address_city'=>$address_city,
