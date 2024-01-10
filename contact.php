@@ -146,15 +146,11 @@
             $postcode = testInput($_POST["postcode"]);
             $city = testInput($_POST["city"]);
             
-            if (empty($street)) {
-                if ($addressRequired) {
-                    $streetErr = "vul een straat in";
-                }
+            if (empty($street) && $addressRequired) {
+                $streetErr = "vul een straat in";
             }
-            if (empty($streetNo)) {
-                if ($addressRequired) {
-                    $streetNoErr = "vul een straat nummer in";
-                }
+            if (empty($streetNo) && $addressRequired) {
+                $streetNoErr = "vul een straat nummer in";
             }
             if (empty($postcode)) {
                 if ($addressRequired) {
@@ -163,10 +159,8 @@
             } elseif (strlen($postcode) != 6 || !is_numeric(substr($postcode, 0, 4)) || !preg_match("/^[a-zA-Z]{2}$/",substr($postcode, 4, 2))) {
                 $postcodeErr = "vul een geldige Nederlandse postcode in";
             }
-            if (empty($city)) {
-                if ($addressRequired) {
+            if (empty($city) && $addressRequired) {
                     $cityErr = "vul een woonplaats in";
-                }
             }
             
             $email = testInput($_POST["email"]);
