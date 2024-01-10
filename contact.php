@@ -77,15 +77,6 @@
     </form>' . PHP_EOL;
     }
     
-    //function to display a text input as well as its label and error message
-    function showFormField($id, $label, $type, $valsAndErrs, $options=NULL, $placeholder=NULL) {
-        echo '        <div class="inputfield">
-            <label for="' . $id . '">' . $label . '</label>
-            <input type="' . $type . '" value="' . $valsAndErrs[$id] . '" id="' . $id . '" name="' . $id . '">
-            <span class="error">' . $valsAndErrs[$id.'Err'] . '</span><br>
-        </div>' . PHP_EOL;
-    }
-    
     function displayThanks($valsAndErrs) {
         echo '<p>Bedankt voor uw reactie<p>
 <div>Naam: ' . $valsAndErrs['title'] . ' ' . $valsAndErrs['name'] . ' </div>

@@ -25,30 +25,17 @@
         echo '    <form method="post" action="index.php" accept-charset=utf-8>
         <input type="hidden" name="page" value="register">' . PHP_EOL;
         
-        echo '        <div class="inputfield">
-            <label for="name">Naam:</label>
-            <input type="text" value="' . $valsAndErrs['name'] . '" id="name" name="name">
-            <span class="error">' . $valsAndErrs['nameErr'] . '</span><br>
-        </div>' . PHP_EOL;
+        //input for name
+        showFormField('name', 'Naam:', 'text', $valsAndErrs);
+        //input for email
+        showFormField('email', 'Email:', 'text', $valsAndErrs);
         
-        echo '        <div class="inputfield">
-            <label for="email">Email:</label>
-            <input type="email" value="' . $valsAndErrs['email'] . '" id="email" name="email">
-            <span class="error">' . $valsAndErrs['emailErr'] . '</span><br>
-        </div>' . PHP_EOL;
-        
-        echo '        <div class="inputfield">
-            <label for="pass">Wachtwoord:</label>
-            <input type="text" value="' . $valsAndErrs['pass'] . '" id="pass" name="pass">
-            <span class="error">' . $valsAndErrs['passErr'] . '</span><br>
-        </div>' . PHP_EOL;
-        
-        echo '        <div class="inputfield">
-            <label for="passConfirm">Wachtwoord Herhalen:</label>
-            <input type="text" value="' . $valsAndErrs['passConfirm'] . '" id="passConfirm" name="passConfirm">
-            <span class="error">' . $valsAndErrs['passConfirmErr'] . '</span><br>
-        </div><br>' . PHP_EOL;
-        
+        //input for password
+        showFormField('pass', 'Wachtwoord:', 'text', $valsAndErrs);
+        showFormField('passConfirm', 'Wachtwoord Herhalen:', 'text', $valsAndErrs);
+
+        echo '        <br>' . PHP_EOL;
+
         echo '        <input type="submit" value="Registreer">
     </form>' . PHP_EOL;
     }
