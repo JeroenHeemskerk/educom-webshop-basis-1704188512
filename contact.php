@@ -102,49 +102,49 @@
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             //check title
-            if (empty($_POST["title"])) {
+            if (empty(getPostVar("title", ''))) {
                 $titleErr = "Kies een aanhef";
             } else {
-                $title = testInput($_POST["title"]);
+                $title = testInput(getPostVar("title"));
             }
             
             //check name (only allow letters, spaces, dashes and apostrophes)
-            if (empty($_POST["name"])) {
+            if (empty(getPostVar("name"))) {
                 $nameErr = "Vul uw naam in";
             } else {
-                $name = testInput($_POST["name"]);
+                $name = testInput(getPostVar("name"));
                 if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {
                     $nameErr= "Alleen letters, streepjes en apostrophen zijn toegestaan	";
                 }
             }
             //check message
-            if (empty($_POST["message"])) {
+            if (empty(getPostVar("message"))) {
                 $messageErr = "Vul een bericht in";
             } else {
-                $message = testInput($_POST["message"]);
+                $message = testInput(getPostVar("message"));
             }
             
             $addressRequired = $emailRequired = $phoneRequired = false;
             //check preference
-            if (empty($_POST["preference"])) {
+            if (empty(getPostVar("preference"))) {
                 $preferenceErr = "Vul in hoe we met u contact op kunnen nemen";
             } else {
-                $preference = testInput($_POST["preference"]);
-                if ($preference == "post" || !empty($_POST["street"]) || !empty($_POST["streetNo"]) || !empty($_POST["postcode"]) || !empty($_POST["city"]) )  {
+                $preference = testInput(getPostVar("preference"));
+                if ($preference == "post" || !empty(getPostVar("street")) || !empty(getPostVar("streetNo")) || !empty(getPostVar("postcode")) || !empty(getPostVar("city")) )  {
                     $addressRequired = true;
                 }
-                if ($preference == "email" || !empty($_POST["email"])) {
+                if ($preference == "email" || !empty(getPostVar("email"))) {
                     $emailRequired = true;
                 }
-                if ($preference == "phone" || !empty($_POST["phone"])) {
+                if ($preference == "phone" || !empty(getPostVar("phone"))) {
                     $phoneRequired = true;
                 }
             }
 
-            $street = testInput($_POST["street"]);
-            $streetNo = testInput($_POST["streetNo"]);
-            $postcode = testInput($_POST["postcode"]);
-            $city = testInput($_POST["city"]);
+            $street = testInput(getPostVar("street"));
+            $streetNo = testInput(getPostVar("streetNo"));
+            $postcode = testInput(getPostVar("postcode"));
+            $city = testInput(getPostVar("city"));
             
             if (empty($street) && $addressRequired) {
                 $streetErr = "vul een straat in";
@@ -163,7 +163,7 @@
                     $cityErr = "vul een woonplaats in";
             }
             
-            $email = testInput($_POST["email"]);
+            $email = testInput(getPostVar("email"));
             //check email (use built-in filter method)
             if ($emailRequired) {
                 if (empty($email)) {
@@ -173,7 +173,7 @@
                 }
             }
             
-            $phone = testInput($_POST["phone"]);
+            $phone = testInput(getPostVar("phone"));
             if ($phoneRequired) {
                 if (empty($phone)) {
                     $phoneErr = "Vul uw telefoon nummer in";
@@ -190,12 +190,5 @@
                                'titleErr'=>$titleErr, 'nameErr'=>$nameErr, 'messageErr'=>$messageErr, 'emailErr'=>$emailErr, 'phoneErr'=>$phoneErr, 'preferenceErr'=>$preferenceErr,
                                'streetErr'=>$streetErr, 'streetNoErr'=>$streetNoErr, 'postcodeErr'=>$postcodeErr, 'cityErr'=>$cityErr);
         return $valsAndErrs;
-    }
-    
-    function testInput($data) {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
     }
 ?>

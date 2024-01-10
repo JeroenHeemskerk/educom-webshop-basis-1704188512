@@ -125,5 +125,14 @@
         echo '    <footer>' . PHP_EOL;
         echo '        <p>&copy 2024, Thomas van Haastrecht</p>' . PHP_EOL;
         echo '    </footer>' . PHP_EOL;
-    } 
+    }
+    
+    //================ common functions ================
+    
+    function testInput($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
 ?>

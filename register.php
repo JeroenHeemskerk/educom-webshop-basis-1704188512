@@ -61,16 +61,16 @@
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             //check name (only allow letters, spaces, dashes and apostrophes)
-            if (empty($_POST["name"])) {
+            if (empty(getPostVar("name"))) {
                 $nameErr = "Vul uw naam in";
             } else {
-                $name = testInput($_POST["name"]);
+                $name = testInput(getPostVar("name"));
                 if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {
                     $nameErr= "Alleen letters, streepjes en apostrophen zijn toegestaan	";
                 }
             }
             
-            $email = testInput($_POST["email"]);
+            $email = testInput(getPostVar("email"));
             //check email (use built-in filter method)
             if (empty($email)) {
                 $emailErr = "Vul uw email in";
@@ -80,11 +80,11 @@
                 $emailErr = "Dit email adres heeft al een account";
             }
             
-            $pass = testInput($_POST["pass"]);
+            $pass = testInput(getPostVar("pass"));
             if (empty($pass)) {
                 $passErr = "Vul een wachtwoord in";
             }
-            $passConfirm = testInput($_POST['passConfirm']);
+            $passConfirm = testInput(getPostVar('passConfirm'));
             if ($pass != $passConfirm) {
                 $passConfirmErr = 'Wachtwoorden moeten gelijk zijn.';
             }
@@ -98,14 +98,7 @@
                                'nameErr'=>$nameErr, 'emailErr'=>$emailErr, 'passErr'=>$passErr, 'passConfirmErr'=>$passConfirmErr);
         return $valsAndErrs;
     }
-    
-    function testInput($data) {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
-    }
-    
+
     function checkEmailExists($email) {
         $users = fopen('users/users.txt', 'r');
         while (!feof($users)) {
