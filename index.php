@@ -136,12 +136,81 @@
         return $data;
     }
     
+    function showFormStart($value) {
+        echo '    <form method="post" action="index.php" accept-charset=utf-8>
+        <input type="hidden" name="page" value="'.$value.'">'.PHP_EOL;
+    }
+    
     //function to display a text input as well as its label and error message
     function showFormField($id, $label, $type, $valsAndErrs, $options=NULL, $placeholder=NULL) {
+        switch ($type) {
+            case 'text':
+                textField($id, $label, $type, $valsAndErrs);
+                break;
+            case 'radio':
+                radioField($id, $label, $type, $valsAndErrs, $options);
+                break;
+            case 'select':
+                selectField($id, $label, $type, $valsAndErrs, $options);
+                break;
+            case 'textarea':
+                textAreaField($id, $label, $type, $valsAndErrs, $options, $placeholder);
+                break;
+            default:
+                //error
+                break;
+        }
+    }
+    
+    function textField($id, $label, $type, $valsAndErrs) {
         echo '        <div class="inputfield">
             <label for="' . $id . '">' . $label . '</label>
             <input type="' . $type . '" value="' . $valsAndErrs[$id] . '" id="' . $id . '" name="' . $id . '">
             <span class="error">' . $valsAndErrs[$id.'Err'] . '</span><br>
         </div>' . PHP_EOL;
+    }
+    
+    function selectField($id, $label, $type, $valsAndErrs, $options) {
+        echo '        <div class="'. $id .'">
+            <label for="'. $id .'">'.$label.'</label>
+            <select name="'. $id .'" id="'. $id .'">' . PHP_EOL;
+
+        echo '            <option value="" disabled ' . ($valsAndErrs[$id] == '' ? 'selected="true"' : '');
+        echo '>Selecteer een optie</option>' . PHP_EOL;
+        
+        foreach ($options as $option => $optionLabel) {
+            echo '<option value="'.$optionLabel.'" ' . ($valsAndErrs[$id] == $optionLabel ? 'selected="true"' : '');
+            echo '>'.$optionLabel.'</option>';
+        }
+
+        echo '        </select>
+            <span class="error">' . $valsAndErrs[$id.'Err'] . '</span>
+        </div><br>' . PHP_EOL;
+    }
+    
+    function radioField($id, $label, $type, $valsAndErrs, $options) {
+        echo '        <label for="'.$id.'">'.$label.'</label>
+        <span class="error">' . $valsAndErrs[$id.'Err'] . '</span><br>'.PHP_EOL;
+        
+        foreach($options as $option => $optionLabel) {
+            echo '<input type="radio" id="'.$option.'Option'.'" name="'.$id.'" value="'.$option.'" ' . ($valsAndErrs[$id] == $option ? "checked" : ''); 
+            echo '>
+        <label for="'.$option.'Option'.'">'.$optionLabel.'</label><br>'.PHP_EOL;
+        }
+    }
+    
+    function textAreaField($id, $label, $type, $valsAndErrs, $options, $placeholder) {
+        echo '        <label for="'.$id.'">'.$label.'</label> <span class="error">' . $valsAndErrs[$id.'Err'] . '</span><br>
+        <textarea name="'.$id.'" placeholder="'.$placeholder.'"';
+        foreach($options as $key => $value){
+            echo ' '.$key.'="'.$value.'"';
+        }
+        echo '>' . $valsAndErrs[$id] . '</textarea><br>
+        <br>';
+    }
+    
+    function showFormEnd($value) {
+        echo '<input type="submit" value="'.$value.'">
+    </form>' . PHP_EOL;
     }
 ?>

@@ -18,27 +18,10 @@
     }
     
     function displayForm($valsAndErrs) {
-        echo '    <form method="post" action="index.php" accept-charset=utf-8>
-        <input type="hidden" name="page" value="contact">
-        <div class="title">
-            <label for="title">Kies uw aanhef:</label>
-
-            <select name="title" id="title">' . PHP_EOL;
+        showFormStart('contact');
         
-        echo '            <option value="" disabled ' . ($valsAndErrs['title'] == '' ? 'selected="true"' : '');
-        echo '>Selecteer een optie</option>
-            <option value="Dhr." ' . ($valsAndErrs['title'] == 'Dhr.' ? 'selected="true"' : '');
-        echo '>Dhr.</option>
-            <option value="Mvr." ' . ($valsAndErrs['title'] == 'Mvr.' ? 'selected="true"' : '');
-        echo '>Mvr.</option>
-            <option value="Dr." ' . ($valsAndErrs['title'] == 'Dr.' ? 'selected="true"' : '');
-        echo '>Dr.</option>
-            <option value="Prof." ' . ($valsAndErrs['title'] == 'Prof.' ? 'selected="true"' : '');
-        echo '>Prof.</option>' . PHP_EOL;
-
-        echo '        </select>
-            <span class="error">' . $valsAndErrs['titleErr'] . '</span>
-        </div><br>' . PHP_EOL;
+        //selection for title
+        showFormField('title', 'Kies uw aanhef:', 'select', $valsAndErrs, TITLES);
         
         //input for name
         showFormField('name', 'Naam:', 'text', $valsAndErrs);
@@ -47,7 +30,7 @@
         //input for phone
         showFormField('phone', 'Tel. nr.:', 'text', $valsAndErrs);
 
-        echo '    <h4>Adres</h4> <span class="error"></span>' . PHP_EOL;
+        echo '    <h4>Adres</h4>' . PHP_EOL;
         
         //input for address fields (street, number, postal code, city)
         showFormField('street', 'Straat:', 'text', $valsAndErrs);
@@ -57,24 +40,15 @@
         
         echo '        <br>' . PHP_EOL;
         
-        echo '        <label for="preference">Communicatie Voorkeur</label>
-        <span class="error">' . $valsAndErrs['preferenceErr'] . '</span><br>
-        <input type="radio" id="emailPref" name="preference" value="email" ' . ($valsAndErrs['preference'] == 'email' ? "checked" : ''); 
-        echo '>
-        <label for="emailPref">Email</label><br>
-        <input type="radio" id="telPref" name="preference" value="phone" ' . ($valsAndErrs['preference'] == 'phone' ? "checked" : '');
-        echo '>
-        <label for="telPref">Telefoon</label><br>
-        <input type="radio" id="postPref" name="preference" value="post" ' . ($valsAndErrs['preference'] == 'post' ? "checked" : '');
-        echo '>
-        <label for="postPref">Post</label><br><br>' . PHP_EOL;
+        //input for communication preference
+        showFormField('preference', 'Communicatie Voorkeur', 'radio', $valsAndErrs, COMM_PREFS);
         
-        echo '        <label for="message">Bericht</label> <span class="error">' . $valsAndErrs['messageErr'] . '</span><br>
-        <textarea name="message" placeholder="Vul in waar u contact over wil opnemen." rows="10" cols="30">' . $valsAndErrs['message'] . '</textarea><br>
-        <br>
+        echo '        <br>' . PHP_EOL;
         
-        <input type="submit" value="Verstuur">
-    </form>' . PHP_EOL;
+        //textbox for message
+        showFormField('message', 'Bericht', 'textarea', $valsAndErrs, ['rows' => 10, 'cols' => 30], 'Vul in waar u contact over wil opnemen.');
+        
+        showFormEnd('Verzenden');
     }
     
     function displayThanks($valsAndErrs) {
@@ -117,11 +91,11 @@
             
             $addressRequired = $emailRequired = $phoneRequired = false;
             //check preference
-            if (empty(getPostVar("preference"))) {
+            if (empty(getPostVar("preference", ''))) {
                 $preferenceErr = "Vul in hoe we met u contact op kunnen nemen";
             } else {
                 $preference = testInput(getPostVar("preference"));
-                if ($preference == "post" || !empty(getPostVar("street")) || !empty(getPostVar("streetNo")) || !empty(getPostVar("postcode")) || !empty(getPostVar("city")) )  {
+                if ($preference == "mail" || !empty(getPostVar("street")) || !empty(getPostVar("streetNo")) || !empty(getPostVar("postcode")) || !empty(getPostVar("city")) )  {
                     $addressRequired = true;
                 }
                 if ($preference == "email" || !empty(getPostVar("email"))) {

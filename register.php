@@ -1,6 +1,6 @@
 <?php
     function registerHeader() {
-        $header = 'Registreer Pagina';
+        $header = 'Registratie Pagina';
         return $header;
     }
 
@@ -22,8 +22,7 @@
         
         echo '<h4>Vul uw gegevens in om te registreren</h4>' . PHP_EOL;
         
-        echo '    <form method="post" action="index.php" accept-charset=utf-8>
-        <input type="hidden" name="page" value="register">' . PHP_EOL;
+        showFormStart('register');
         
         //input for name
         showFormField('name', 'Naam:', 'text', $valsAndErrs);
@@ -36,8 +35,7 @@
 
         echo '        <br>' . PHP_EOL;
 
-        echo '        <input type="submit" value="Registreer">
-    </form>' . PHP_EOL;
+        showFormEnd('Registreer');
     }
 
 
