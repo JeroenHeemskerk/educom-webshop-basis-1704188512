@@ -1,16 +1,23 @@
-<?php 
-    $header = 'Contact Pagina';
+<?php
+
+    define("TITLES", array("mr."=>"Dhr.", "mrs."=>"Mvr.", "dr." => "Dr.", "prof." => "Prof."));
+    define("COMM_PREFS", array("email" => "E-Mail", "phone" => "Telefoon", "mail" => "Post"));
+    
+    function contactHeader() {
+        $header = 'Contact Pagina';
+        return $header;
+    }
     
     function showContactContent() {
-        $vals_and_errs = validation();
-        if ($vals_and_errs['valid']) {
-            display_thanks($vals_and_errs);
+        $valsAndErrs = validation();
+        if ($valsAndErrs['valid']) {
+            displayThanks($valsAndErrs);
         } else {
-            display_form($vals_and_errs);
+            displayForm($valsAndErrs);
         }
     }
     
-    function display_form($vals_and_errs) {
+    function displayForm($valsAndErrs) {
         echo '    <form method="post" action="index.php" accept-charset=utf-8>
         <input type="hidden" name="page" value="contact">
         <div class="title">
@@ -18,96 +25,79 @@
 
             <select name="title" id="title">' . PHP_EOL;
         
-        echo '            <option value="" disabled ' . ($vals_and_errs['title'] == '' ? 'selected="true"' : '');
+        echo '            <option value="" disabled ' . ($valsAndErrs['title'] == '' ? 'selected="true"' : '');
         echo '>Selecteer een optie</option>
-            <option value="Dhr." ' . ($vals_and_errs['title'] == 'Dhr.' ? 'selected="true"' : '');
+            <option value="Dhr." ' . ($valsAndErrs['title'] == 'Dhr.' ? 'selected="true"' : '');
         echo '>Dhr.</option>
-            <option value="Mvr." ' . ($vals_and_errs['title'] == 'Mvr.' ? 'selected="true"' : '');
+            <option value="Mvr." ' . ($valsAndErrs['title'] == 'Mvr.' ? 'selected="true"' : '');
         echo '>Mvr.</option>
-            <option value="Dr." ' . ($vals_and_errs['title'] == 'Dr.' ? 'selected="true"' : '');
+            <option value="Dr." ' . ($valsAndErrs['title'] == 'Dr.' ? 'selected="true"' : '');
         echo '>Dr.</option>
-            <option value="Prof." ' . ($vals_and_errs['title'] == 'Prof.' ? 'selected="true"' : '');
+            <option value="Prof." ' . ($valsAndErrs['title'] == 'Prof.' ? 'selected="true"' : '');
         echo '>Prof.</option>' . PHP_EOL;
 
         echo '        </select>
-            <span class="error">' . $vals_and_errs['titleErr'] . '</span>
+            <span class="error">' . $valsAndErrs['titleErr'] . '</span>
         </div><br>' . PHP_EOL;
         
-        echo '        <div class="inputfield">
-            <label for="name">Naam:</label>
-            <input type="text" value="' . $vals_and_errs['name'] . '" id="name" name="name">
-            <span class="error">' . $vals_and_errs['nameErr'] . '</span><br>
-        </div>' . PHP_EOL;
-        
-        echo '        <div class="inputfield">
-            <label for="email">Email:</label>
-            <input type="email" value="' . $vals_and_errs['email'] . '" id="email" name="email">
-            <span class="error">' . $vals_and_errs['emailErr'] . '</span><br>
-        </div>' . PHP_EOL;
-        
-        echo '        <div class="inputfield">
-            <label for="tel">Tel. nr.:</label>
-            <input type="text" value="' . $vals_and_errs['phone'] . '" id="tel" name="tel">
-            <span class="error">' . $vals_and_errs['phoneErr'] . '</span><br>
-        </div><br>' . PHP_EOL;
+        //input for name
+        showFormField('name', 'Naam:', 'text', $valsAndErrs);
+        //input for email
+        showFormField('email', 'Email:', 'text', $valsAndErrs);
+        //input for phone
+        showFormField('phone', 'Tel. nr.:', 'text', $valsAndErrs);
 
-        echo '    <h4>Adres</h4> <span class="error"></span>
-        <div class="inputfield">
-            <label for="street">Straat:</label>
-            <input type="text" value="' . $vals_and_errs['address_street'] . '" id="street" name="street">
-            <span class="error">' . $vals_and_errs['streetErr'] . '</span><br>
-        </div>' . PHP_EOL;
+        echo '    <h4>Adres</h4> <span class="error"></span>' . PHP_EOL;
         
-        echo '        <div class="inputfield">
-            <label for="street_no">Nr. + Toevoeging:</label>
-            <input type="text" value="' . $vals_and_errs['address_street_no'] . '" id="street_no" name="street_no">
-            <span class="error">' . $vals_and_errs['street_noErr'] . '</span><br>
-        </div>' . PHP_EOL;
+        //input for address fields (street, number, postal code, city)
+        showFormField('street', 'Straat:', 'text', $valsAndErrs);
+        showFormField('streetNo', 'Nr. + Toevoeging:', 'text', $valsAndErrs);
+        showFormField('postcode', 'Postcode:', 'text', $valsAndErrs);
+        showFormField('city', 'Woonplaats:', 'text', $valsAndErrs);
         
-        echo '        <div class="inputfield">
-            <label for="postcode">Postcode:</label>
-            <input type="text" value="' . $vals_and_errs['address_postcode'] . '" id="postcode" name="postcode">
-            <span class="error">' . $vals_and_errs['postcodeErr'] . '</span><br>
-        </div>' . PHP_EOL;
-  
-        echo '        <div class="inputfield">
-            <label for="city">Woonplaats:</label>
-            <input type="text" value="' . $vals_and_errs['address_city'] . '" id="city" name="city">
-            <span class="error">' . $vals_and_errs['cityErr'] . '</span><br>
-        </div><br>' . PHP_EOL;
+        echo '        <br>' . PHP_EOL;
         
         echo '        <label for="preference">Communicatie Voorkeur</label>
-        <span class="error">' . $vals_and_errs['preferenceErr'] . '</span><br>
-        <input type="radio" id="email_pref" name="preference" value="email" ' . ($vals_and_errs['preference'] == 'email' ? "checked" : ''); 
+        <span class="error">' . $valsAndErrs['preferenceErr'] . '</span><br>
+        <input type="radio" id="emailPref" name="preference" value="email" ' . ($valsAndErrs['preference'] == 'email' ? "checked" : ''); 
         echo '>
-        <label for="email_pref">Email</label><br>
-        <input type="radio" id="tel_pref" name="preference" value="tel" ' . ($vals_and_errs['preference'] == 'tel' ? "checked" : '');
+        <label for="emailPref">Email</label><br>
+        <input type="radio" id="telPref" name="preference" value="phone" ' . ($valsAndErrs['preference'] == 'phone' ? "checked" : '');
         echo '>
-        <label for="tel_pref">Telefoon</label><br>
-        <input type="radio" id="post_pref" name="preference" value="post" ' . ($vals_and_errs['preference'] == 'post' ? "checked" : '');
+        <label for="telPref">Telefoon</label><br>
+        <input type="radio" id="postPref" name="preference" value="post" ' . ($valsAndErrs['preference'] == 'post' ? "checked" : '');
         echo '>
-        <label for="post_pref">Post</label><br><br>' . PHP_EOL;
+        <label for="postPref">Post</label><br><br>' . PHP_EOL;
         
-        echo '        <label for="message">Bericht</label> <span class="error">' . $vals_and_errs['messageErr'] . '</span><br>
-        <textarea name="message" placeholder="Vul in waar u contact over wil opnemen." rows="10" cols="30">' . $vals_and_errs['message'] . '</textarea><br>
+        echo '        <label for="message">Bericht</label> <span class="error">' . $valsAndErrs['messageErr'] . '</span><br>
+        <textarea name="message" placeholder="Vul in waar u contact over wil opnemen." rows="10" cols="30">' . $valsAndErrs['message'] . '</textarea><br>
         <br>
         
         <input type="submit" value="Verstuur">
     </form>' . PHP_EOL;
     }
     
-    function display_thanks($vals_and_errs) {
+    //function to display a text input as well as its label and error message
+    function showFormField($id, $label, $type, $valsAndErrs, $options=NULL, $placeholder=NULL) {
+        echo '        <div class="inputfield">
+            <label for="' . $id . '">' . $label . '</label>
+            <input type="' . $type . '" value="' . $valsAndErrs[$id] . '" id="' . $id . '" name="' . $id . '">
+            <span class="error">' . $valsAndErrs[$id.'Err'] . '</span><br>
+        </div>' . PHP_EOL;
+    }
+    
+    function displayThanks($valsAndErrs) {
         echo '<p>Bedankt voor uw reactie<p>
-<div>Naam: ' . $vals_and_errs['title'] . ' ' . $vals_and_errs['name'] . ' </div>
-<div>Email: ' . $vals_and_errs['email'] . ' </div>
-<div>Tel. nr.: ' . $vals_and_errs['phone'] . ' </div>
-<div>Adres: ' . $vals_and_errs['address_street'] . ', ' . $vals_and_errs['address_street_no'] . ', ' . $vals_and_errs['address_postcode'] . ', ' . $vals_and_errs['address_city'] . ' </div><br>';
+<div>Naam: ' . $valsAndErrs['title'] . ' ' . $valsAndErrs['name'] . ' </div>
+<div>Email: ' . $valsAndErrs['email'] . ' </div>
+<div>Tel. nr.: ' . $valsAndErrs['phone'] . ' </div>
+<div>Adres: ' . $valsAndErrs['street'] . ', ' . $valsAndErrs['streetNo'] . ', ' . $valsAndErrs['postcode'] . ', ' . $valsAndErrs['city'] . ' </div><br>';
 
     }
     
     function validation() {
-        $title = $name = $message = $email = $phone = $preference = $address_street = $address_street_no = $address_postcode = $address_city = '';
-        $titleErr = $nameErr = $messageErr = $emailErr = $phoneErr = $preferenceErr = $streetErr = $street_noErr = $postcodeErr = $cityErr = '';
+        $title = $name = $message = $email = $phone = $preference = $street = $streetNo = $postcode = $city = '';
+        $titleErr = $nameErr = $messageErr = $emailErr = $phoneErr = $preferenceErr = $streetErr = $streetNoErr = $postcodeErr = $cityErr = '';
         $valid = false;
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -115,14 +105,14 @@
             if (empty($_POST["title"])) {
                 $titleErr = "Kies een aanhef";
             } else {
-                $title = test_input($_POST["title"]);
+                $title = testInput($_POST["title"]);
             }
             
             //check name (only allow letters, spaces, dashes and apostrophes)
             if (empty($_POST["name"])) {
                 $nameErr = "Vul uw naam in";
             } else {
-                $name = test_input($_POST["name"]);
+                $name = testInput($_POST["name"]);
                 if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {
                     $nameErr= "Alleen letters, streepjes en apostrophen zijn toegestaan	";
                 }
@@ -131,57 +121,57 @@
             if (empty($_POST["message"])) {
                 $messageErr = "Vul een bericht in";
             } else {
-                $message = test_input($_POST["message"]);
+                $message = testInput($_POST["message"]);
             }
             
-            $address_required = $email_required = $phone_required = false;
+            $addressRequired = $emailRequired = $phoneRequired = false;
             //check preference
             if (empty($_POST["preference"])) {
                 $preferenceErr = "Vul in hoe we met u contact op kunnen nemen";
             } else {
-                $preference = test_input($_POST["preference"]);
-                if ($preference == "post" || !empty($_POST["street"]) || !empty($_POST["street_no"]) || !empty($_POST["postcode"]) || !empty($_POST["city"]) )  {
-                    $address_required = true;
+                $preference = testInput($_POST["preference"]);
+                if ($preference == "post" || !empty($_POST["street"]) || !empty($_POST["streetNo"]) || !empty($_POST["postcode"]) || !empty($_POST["city"]) )  {
+                    $addressRequired = true;
                 }
                 if ($preference == "email" || !empty($_POST["email"])) {
-                    $email_required = true;
+                    $emailRequired = true;
                 }
-                if ($preference == "tel" || !empty($_POST["tel"])) {
-                    $phone_required = true;
+                if ($preference == "phone" || !empty($_POST["phone"])) {
+                    $phoneRequired = true;
                 }
             }
 
-            $address_street = test_input($_POST["street"]);
-            $address_street_no = test_input($_POST["street_no"]);
-            $address_postcode = test_input($_POST["postcode"]);
-            $address_city = test_input($_POST["city"]);
+            $street = testInput($_POST["street"]);
+            $streetNo = testInput($_POST["streetNo"]);
+            $postcode = testInput($_POST["postcode"]);
+            $city = testInput($_POST["city"]);
             
-            if (empty($address_street)) {
-                if ($address_required) {
+            if (empty($street)) {
+                if ($addressRequired) {
                     $streetErr = "vul een straat in";
                 }
             }
-            if (empty($address_street_no)) {
-                if ($address_required) {
-                    $street_noErr = "vul een straat nummer in";
+            if (empty($streetNo)) {
+                if ($addressRequired) {
+                    $streetNoErr = "vul een straat nummer in";
                 }
             }
-            if (empty($address_postcode)) {
-                if ($address_required) {
+            if (empty($postcode)) {
+                if ($addressRequired) {
                     $postcodeErr = "vul een postcode in";
                 }
-            } elseif (strlen($address_postcode) != 6 || !is_numeric(substr($address_postcode, 0, 4)) || !preg_match("/^[a-zA-Z]{2}$/",substr($address_postcode, 4, 2))) {
+            } elseif (strlen($postcode) != 6 || !is_numeric(substr($postcode, 0, 4)) || !preg_match("/^[a-zA-Z]{2}$/",substr($postcode, 4, 2))) {
                 $postcodeErr = "vul een geldige Nederlandse postcode in";
             }
-            if (empty($address_city)) {
-                if ($address_required) {
+            if (empty($city)) {
+                if ($addressRequired) {
                     $cityErr = "vul een woonplaats in";
                 }
             }
             
-            $email = test_input($_POST["email"]);
+            $email = testInput($_POST["email"]);
             //check email (use built-in filter method)
-            if ($email_required) {
+            if ($emailRequired) {
                 if (empty($email)) {
                     $emailErr = "Vul uw email in";
                 } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -189,8 +179,8 @@
                 }
             }
             
-            $phone = test_input($_POST["tel"]);
-            if ($phone_required) {
+            $phone = testInput($_POST["phone"]);
+            if ($phoneRequired) {
                 if (empty($phone)) {
                     $phoneErr = "Vul uw telefoon nummer in";
                 } else if (!is_numeric($phone)) {
@@ -199,16 +189,16 @@
             }
             
             //update valid boolean after all error checking
-            $valid = empty($titleErr) && empty($nameErr) && empty($messageErr) && empty($emailErr) && empty($phoneErr) && empty($preferenceErr) && empty($streetErr) && empty($street_noErr) && empty($postcodeErr) && empty($cityErr);
+            $valid = empty($titleErr) && empty($nameErr) && empty($messageErr) && empty($emailErr) && empty($phoneErr) && empty($preferenceErr) && empty($streetErr) && empty($streetNoErr) && empty($postcodeErr) && empty($cityErr);
         }
-        $vals_and_errs = array('valid'=>$valid, 'title'=>$title, 'name'=>$name, 'message'=>$message, 'email'=>$email, 'phone'=>$phone, 'preference'=>$preference,
-                               'address_street'=>$address_street, 'address_street_no'=>$address_street_no, 'address_postcode'=>$address_postcode, 'address_city'=>$address_city,
+        $valsAndErrs = array('valid'=>$valid, 'title'=>$title, 'name'=>$name, 'message'=>$message, 'email'=>$email, 'phone'=>$phone, 'preference'=>$preference,
+                               'street'=>$street, 'streetNo'=>$streetNo, 'postcode'=>$postcode, 'city'=>$city,
                                'titleErr'=>$titleErr, 'nameErr'=>$nameErr, 'messageErr'=>$messageErr, 'emailErr'=>$emailErr, 'phoneErr'=>$phoneErr, 'preferenceErr'=>$preferenceErr,
-                               'streetErr'=>$streetErr, 'street_noErr'=>$street_noErr, 'postcodeErr'=>$postcodeErr, 'cityErr'=>$cityErr);
-        return $vals_and_errs;
+                               'streetErr'=>$streetErr, 'streetNoErr'=>$streetNoErr, 'postcodeErr'=>$postcodeErr, 'cityErr'=>$cityErr);
+        return $valsAndErrs;
     }
     
-    function test_input($data) {
+    function testInput($data) {
         $data = trim($data);
         $data = stripslashes($data);
         $data = htmlspecialchars($data);

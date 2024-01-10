@@ -65,19 +65,19 @@
         { 
             case 'home':
                 require_once('home.php');
-                $pageName = $header;
+                $pageName = homeHeader();
                 break;
             case 'about':
                 require_once('about.php');
-                $pageName = $header;
+                $pageName = aboutHeader();
                 break;
             case 'contact':
                 require_once('contact.php');
-                $pageName = $header;
+                $pageName = contactHeader();
                 break;
             case 'register':
                 require_once('register.php');
-                $pageName = $header;
+                $pageName = registerHeader();
                 break;
             default:
                 $pageName = '404: Page Not Found';
@@ -87,12 +87,16 @@
 
     function showMenu() { 
         echo '    <ul class="menu">' . PHP_EOL;
-        echo '        <li><a href="index.php?page=home">HOME</a></li>' . PHP_EOL;
-        echo '        <li><a href="index.php?page=about">ABOUT</a></li>' . PHP_EOL;
-        echo '        <li><a href="index.php?page=contact">CONTACT</a></li>' . PHP_EOL;
-        echo '        <li><a href="index.php?page=register">REGISTER</a></li>' . PHP_EOL;
+        showMenuItem('home', 'HOME');
+        showMenuItem('about', 'ABOUT');
+        showMenuItem('contact', 'CONTACT');
+        showMenuItem('register', 'REGISTER');
         echo '    </ul>' . PHP_EOL;
-    } 
+    }
+    
+    function showMenuItem($link, $label) {
+        echo '        <li><a href="index.php?page=' . $link . '">' . $label . '</a></li>' . PHP_EOL;
+    }
 
     function showContent($page) { 
         switch ($page) 
