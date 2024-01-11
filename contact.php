@@ -133,7 +133,7 @@
             if ($emailRequired) {
                 if (empty($email)) {
                     $emailErr = "Vul uw email in";
-                } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     $emailErr = "ongeldig email";
                 }
             }
@@ -142,7 +142,7 @@
             if ($phoneRequired) {
                 if (empty($phone)) {
                     $phoneErr = "Vul uw telefoon nummer in";
-                } else if (!is_numeric($phone)) {
+                } elseif (!is_numeric($phone)) {
                     $phoneErr = "Ongeldig nummer";
                 }
             }

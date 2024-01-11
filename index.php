@@ -145,7 +145,9 @@
     function showFormField($id, $label, $type, $valsAndErrs, $options=NULL, $placeholder=NULL) {
         switch ($type) {
             case 'text':
-                textField($id, $label, $type, $valsAndErrs);
+            case 'password':
+            case 'email':
+                inputField($id, $label, $type, $valsAndErrs);
                 break;
             case 'radio':
                 radioField($id, $label, $type, $valsAndErrs, $options);
@@ -162,7 +164,7 @@
         }
     }
     
-    function textField($id, $label, $type, $valsAndErrs) {
+    function inputField($id, $label, $type, $valsAndErrs) {
         echo '        <div class="inputfield">
             <label for="' . $id . '">' . $label . '</label>
             <input type="' . $type . '" value="' . $valsAndErrs[$id] . '" id="' . $id . '" name="' . $id . '">

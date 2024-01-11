@@ -71,9 +71,9 @@
             //check email (use built-in filter method)
             if (empty($email)) {
                 $emailErr = "Vul uw email in";
-            } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $emailErr = "ongeldig email";
-            } else if (checkEmailExists($email)) {
+            } elseif (checkEmailExists($email)) {
                 $emailErr = "Dit email adres heeft al een account";
             }
             
@@ -92,7 +92,7 @@
             $valid = empty($nameErr) && empty($emailErr) && empty($passErr) && empty($passConfirmErr);
         }
         $valsAndErrs = array('valid'=>$valid, 'name'=>$name, 'email'=>$email, 'pass'=>$pass, 'passConfirm'=>$passConfirm,
-                               'nameErr'=>$nameErr, 'emailErr'=>$emailErr, 'passErr'=>$passErr, 'passConfirmErr'=>$passConfirmErr);
+                             'nameErr'=>$nameErr, 'emailErr'=>$emailErr, 'passErr'=>$passErr, 'passConfirmErr'=>$passConfirmErr);
         return $valsAndErrs;
     }
 
