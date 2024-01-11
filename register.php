@@ -95,15 +95,4 @@
                              'nameErr'=>$nameErr, 'emailErr'=>$emailErr, 'passErr'=>$passErr, 'passConfirmErr'=>$passConfirmErr);
         return $valsAndErrs;
     }
-
-    function checkEmailExists($email) {
-        $users = fopen('users/users.txt', 'r');
-        while (!feof($users)) {
-            $userEmail = explode('|', fgets($users))[0];
-            if ($userEmail == $email) {
-                return true;
-            }
-        }
-        return false;
-    }
 ?>

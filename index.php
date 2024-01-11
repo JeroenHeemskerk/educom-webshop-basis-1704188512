@@ -136,6 +136,17 @@
         return $data;
     }
     
+    function checkEmailExists($email) {
+        $users = fopen('users/users.txt', 'r');
+        while (!feof($users)) {
+            $userEmail = explode('|', fgets($users))[0];
+            if ($userEmail == $email) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     function showFormStart($value) {
         echo '    <form method="post" action="index.php" accept-charset=utf-8>
         <input type="hidden" name="page" value="'.$value.'">'.PHP_EOL;
