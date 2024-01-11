@@ -57,22 +57,13 @@
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             //check name (only allow letters, spaces, dashes and apostrophes)
-            if (empty(getPostVar("name"))) {
-                $nameErr = "Vul uw naam in";
-            } else {
-                $name = testInput(getPostVar("name"));
-                if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {
-                    $nameErr= "Alleen letters, streepjes en apostrophen zijn toegestaan	";
-                }
-            }
+            $name = testInput(getPostVar("name"));
+            $nameErr = validateName($name);
             
             $email = testInput(getPostVar("email"));
             //check email (use built-in filter method)
-            if (empty($email)) {
-                $emailErr = "Vul uw email in";
-            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $emailErr = "ongeldig email";
-            } elseif (checkEmailExists($email)) {
+            $emailErr = validateEmail($email);
+            if (doesEmailExist($email)) {
                 $emailErr = "Dit email adres heeft al een account";
             }
             

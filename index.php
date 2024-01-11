@@ -146,7 +146,31 @@
         return $data;
     }
     
-    function checkEmailExists($email) {
+    //function that checks name input and returns an error message
+    function validateName($name) {
+        $nameErr = '';
+        if (empty($name)) {
+                $nameErr = "Vul uw naam in";
+        } elseif (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {
+            $nameErr= "Alleen letters, streepjes en apostrophen zijn toegestaan	";
+        }
+        return $nameErr;
+    }
+    
+    //function that checks email input and returns an error message
+    function validateEmail($email, $emailRequired=true) {
+        $emailErr = '';
+        if ($emailRequired) {
+            if (empty($email)) {
+                $emailErr = "Vul uw email in";
+            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $emailErr = "ongeldig email";
+            }
+        }
+        return $emailErr;
+    }
+    
+    function doesEmailExist($email) {
         $users = fopen('users/users.txt', 'r');
         while (!feof($users)) {
             $userEmail = explode('|', fgets($users))[0];
