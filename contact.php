@@ -26,7 +26,7 @@
         //input for name
         showFormField('name', 'Naam:', 'text', $valsAndErrs);
         //input for email
-        showFormField('email', 'Email:', 'text', $valsAndErrs);
+        showFormField('email', 'Email:', 'email', $valsAndErrs);
         //input for phone
         showFormField('phone', 'Tel. nr.:', 'text', $valsAndErrs);
 
