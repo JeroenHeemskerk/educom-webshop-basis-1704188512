@@ -79,6 +79,10 @@
                 require_once('register.php');
                 $pageName = registerHeader();
                 break;
+            case 'login':
+                require_once('login.php');
+                $pageName = loginHeader();
+                break;
             default:
                 $pageName = '404: Page Not Found';
         }
@@ -91,6 +95,7 @@
         showMenuItem('about', 'ABOUT');
         showMenuItem('contact', 'CONTACT');
         showMenuItem('register', 'REGISTER');
+        showMenuItem('login', 'LOGIN');
         echo '    </ul>' . PHP_EOL;
     }
     
@@ -116,6 +121,11 @@
             case 'register':
                 require_once('register.php');
                 showRegisterContent();
+                break;
+            case 'login':
+                require_once('login.php');
+                showLoginContent();
+                break;
             default:
                 //require('404.php');
         }     
