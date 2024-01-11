@@ -37,13 +37,10 @@
         $valid = false;
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            //check email
             $email = testInput(getPostVar("email"));
-            //check email (use built-in filter method)
-            if (empty($email)) {
-                $emailErr = "Vul uw email in";
-            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $emailErr = "ongeldig email";
-            } elseif (!checkEmailExists($email)) {
+            $emailErr = validateEmail($email);
+            if (!doesEmailExist($email)) {
                 $emailErr = "Dit email adres heeft geen account";
             }
             
@@ -53,8 +50,6 @@
             } elseif (empty($emailErr) && !validateLogin($email, $pass)) {
                 $passErr = "Ongeldig wachtwoord";
             }
-            
-            
             
             //update valid boolean after all error checking
             $valid = empty($nameErr) && empty($emailErr) && empty($passErr) && empty($passConfirmErr);
