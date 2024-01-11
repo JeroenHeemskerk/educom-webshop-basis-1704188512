@@ -7,6 +7,7 @@
     function showRegisterContent() {
         $valsAndErrs = validation();
         if ($valsAndErrs['valid']) {
+            addUser($valsAndErrs);
             displayThanks($valsAndErrs);
         } else {
             displayForm($valsAndErrs);
@@ -15,9 +16,7 @@
     
     function displayThanks($valsAndErrs) {
         echo '<h4>Registratie gelukt!</h4>
-<div>Email: ' . $valsAndErrs['email'] . ' </div>' . PHP_EOL;
-        
-        addUser($valsAndErrs);
+<div>Email: ' . $valsAndErrs['email'] . ' </div>' . PHP_EOL;        
     }
     
     function addUser($valsAndErrs, $userFile='users/users.txt') {
