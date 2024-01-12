@@ -15,7 +15,7 @@
     }
     
     function getLoggedInUsername() {
-        return isset($_SESSION['$name']) ? $_SESSION['$name'] : NULL;
+        return isset($_SESSION['name']) ? $_SESSION['name'] : NULL;
     }
 
 ?>

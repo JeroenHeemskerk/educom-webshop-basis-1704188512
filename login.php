@@ -7,7 +7,7 @@
     function showLoginContent() {
         $valsAndErrs = validation();
         if ($valsAndErrs['valid']) {
-            loginUser('temp name');   //$valsAndErrs['username']);
+            loginUser($valsAndErrs['username']);
             header('Location: index.php');
         } else {
             displayForm($valsAndErrs);
