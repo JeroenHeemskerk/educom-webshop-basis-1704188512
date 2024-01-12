@@ -1,4 +1,7 @@
 <?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     $page = getRequestedPage();
     showResponsePage($page);
     
@@ -21,15 +24,15 @@
     
     //================ request functions ================
     
-    function getArrayVar($array, $key, $default='home') { 
+    function getArrayVar($array, $key, $default='') { 
         return isset($array[$key]) ? $array[$key] : $default; 
     } 
     
-    function getPostVar($key, $default='home') { 
+    function getPostVar($key, $default='') { 
         return getArrayVar($_POST, $key, $default);
     } 
 
-    function getUrlVar($key, $default='home') { 
+    function getUrlVar($key, $default='') { 
         return getArrayVar($_GET, $key, $default);
     }
     
@@ -63,6 +66,9 @@
         
         switch ($page) 
         { 
+            case 'logout':
+                require_once('session_manager.php');
+                logoutUser();
             case 'home':
                 require_once('home.php');
                 $pageName = homeHeader();
@@ -94,8 +100,13 @@
         showMenuItem('home', 'HOME');
         showMenuItem('about', 'ABOUT');
         showMenuItem('contact', 'CONTACT');
-        showMenuItem('register', 'REGISTER');
-        showMenuItem('login', 'LOGIN');
+        require_once('session_manager.php');
+        if (isUserLoggedIn()) {
+            showMenuItem('logout', 'LOGOUT ' . getLoggedInUsername());
+        } else {
+            showMenuItem('register', 'REGISTER');
+            showMenuItem('login', 'LOGIN');
+        }
         echo '    </ul>' . PHP_EOL;
     }
     
@@ -106,6 +117,7 @@
     function showContent($page) { 
         switch ($page) 
         { 
+            case 'logout':
             case 'home':
                 require_once('home.php');
                 showHomeContent();
@@ -120,10 +132,12 @@
                 break;
             case 'register':
                 require_once('register.php');
+                require('user_service.php');
                 showRegisterContent();
                 break;
             case 'login':
                 require_once('login.php');
+                require('user_service.php');
                 showLoginContent();
                 break;
             default:
@@ -168,17 +182,6 @@
             }
         }
         return $emailErr;
-    }
-    
-    function doesEmailExist($email) {
-        $users = fopen('users/users.txt', 'r');
-        while (!feof($users)) {
-            $userEmail = explode('|', fgets($users))[0];
-            if ($userEmail == $email) {
-                return true;
-            }
-        }
-        return false;
     }
     
     function showFormStart($value) {

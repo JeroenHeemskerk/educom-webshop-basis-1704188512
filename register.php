@@ -19,16 +19,6 @@
 <div>Email: ' . $valsAndErrs['email'] . ' </div>' . PHP_EOL;        
     }
     
-    function addUser($valsAndErrs, $userFile='users/users.txt') {
-        $file = fopen($userFile, 'a');
-        $email = $valsAndErrs['email'];
-        $name  = $valsAndErrs['name'];
-        $pass  = $valsAndErrs['pass'];
-        
-        $line = implode('|', array($email, $name, $pass));
-        fwrite($file, PHP_EOL . $line);
-    }
-    
     function displayForm($valsAndErrs) {
         
         echo '<h4>Vul uw gegevens in om te registreren</h4>' . PHP_EOL;
@@ -60,8 +50,8 @@
             $name = testInput(getPostVar("name"));
             $nameErr = validateName($name);
             
+            //check email
             $email = testInput(getPostVar("email"));
-            //check email (use built-in filter method)
             $emailErr = validateEmail($email);
             if (doesEmailExist($email)) {
                 $emailErr = "Dit email adres heeft al een account";
