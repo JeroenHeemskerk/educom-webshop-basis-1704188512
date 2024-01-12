@@ -8,7 +8,7 @@
         $valsAndErrs = validation();
         if ($valsAndErrs['valid']) {
             addUser($valsAndErrs);
-            displayThanks($valsAndErrs);
+            header('Location: index.php?page=login');
         } else {
             displayForm($valsAndErrs);
         }
