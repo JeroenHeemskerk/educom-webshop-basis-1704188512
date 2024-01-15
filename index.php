@@ -2,8 +2,11 @@
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
+    require_once('session_manager.php');
+    require_once('user_service.php');
     $page = getRequestedPage();
-    showResponsePage($page);
+    $valsAndErrs = processRequest($page);
+    showResponsePage($valsAndErrs);
     
     function getRequestedPage() {
         $method = $_SERVER['REQUEST_METHOD'];
@@ -15,10 +18,46 @@
         return $p;
     }
     
-    function showResponsePage($page) {
+    function processRequest($page) {
+        switch ($page) {
+            case 'contact':
+                require_once('contact.php');
+                $valsAndErrs = validateContact();
+                // currently no separate thank you page
+                // if ($valsAndErrs['valid']) {
+                    // $page = 'thanks';
+                // }
+                break;
+            case 'login':
+                require_once('login.php');
+                $valsAndErrs = validateLogin();
+                if ($valsAndErrs['valid']) {
+                    loginUser($valsAndErrs['name']);
+                    $page = 'home';
+                }
+                break;
+            case 'logout':
+                logoutUser();
+                $page = 'home';
+                break;
+            case 'register':
+                require_once('register.php');
+                $valsAndErrs = validateRegistration();
+                if ($valsAndErrs['valid']) {
+                    addUser($valsAndErrs);
+                    $page = 'login';
+                }
+                break;
+        }
+        
+        $valsAndErrs['page'] = $page;
+        return $valsAndErrs;
+    }
+    
+    function showResponsePage($valsAndErrs) {
         beginDocument();
         showHeadSection();
-        showBodySection($page);
+        showBodySection($valsAndErrs);
         endDocument();
     }
     
@@ -49,11 +88,11 @@
         echo '    </head>' . PHP_EOL;
     } 
 
-    function showBodySection($page) { 
+    function showBodySection($valsAndErrs) { 
         echo '    <body>' . PHP_EOL;
-        showHeader($page);
+        showHeader($valsAndErrs['page']);
         showMenu();
-        showContent($page);
+        showContent($valsAndErrs);
         showFooter();
         echo '    </body>' . PHP_EOL;
     } 
@@ -65,10 +104,7 @@
     function showHeader($page) {
         
         switch ($page) 
-        { 
-            case 'logout':
-                require_once('session_manager.php');
-                logoutUser();
+        {
             case 'home':
                 require_once('home.php');
                 $pageName = homeHeader();
@@ -114,10 +150,9 @@
         echo '        <li><a href="index.php?page=' . $link . '">' . $label . '</a></li>' . PHP_EOL;
     }
 
-    function showContent($page) { 
-        switch ($page) 
+    function showContent($valsAndErrs) { 
+        switch ($valsAndErrs['page']) 
         { 
-            case 'logout':
             case 'home':
                 require_once('home.php');
                 showHomeContent();
@@ -128,17 +163,15 @@
                 break;
             case 'contact':
                 require_once('contact.php');
-                showContactContent();
+                showContactContent($valsAndErrs);
                 break;
             case 'register':
                 require_once('register.php');
-                require('user_service.php');
-                showRegisterContent();
+                showRegisterContent($valsAndErrs);
                 break;
             case 'login':
                 require_once('login.php');
-                require('user_service.php');
-                showLoginContent();
+                showLoginContent($valsAndErrs);
                 break;
             default:
                 //require('404.php');

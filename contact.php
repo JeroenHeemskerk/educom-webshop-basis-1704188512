@@ -8,8 +8,7 @@
         return $header;
     }
     
-    function showContactContent() {
-        $valsAndErrs = validation();
+    function showContactContent($valsAndErrs) {
         if ($valsAndErrs['valid']) {
             displayThanks($valsAndErrs);
         } else {
@@ -60,7 +59,7 @@
 
     }
     
-    function validation() {
+    function validateContact() {
         $title = $name = $message = $email = $phone = $preference = $street = $streetNo = $postcode = $city = '';
         $titleErr = $nameErr = $messageErr = $emailErr = $phoneErr = $preferenceErr = $streetErr = $streetNoErr = $postcodeErr = $cityErr = '';
         $valid = false;

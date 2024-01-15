@@ -3,6 +3,7 @@
         $users = fopen($userFile, 'r');
         while (!feof($users)) {
             list($userEmail, $userName, $userPass) = explode('|', fgets($users));
+            $userPass = rtrim($userPass, "\r\n");
             if ($userEmail == $email) {
                 return ['email' => $userEmail, 'name' => $userName, 'pass' => $userPass];
             }

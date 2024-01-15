@@ -4,21 +4,10 @@
         return $header;
     }
 
-    function showRegisterContent() {
-        $valsAndErrs = validation();
-        if ($valsAndErrs['valid']) {
-            addUser($valsAndErrs);
-            header('Location: index.php?page=login');
-        } else {
-            displayForm($valsAndErrs);
-        }
+    function showRegisterContent($valsAndErrs) {
+        displayForm($valsAndErrs);
     }
-    
-    function displayThanks($valsAndErrs) {
-        echo '<h4>Registratie gelukt!</h4>
-<div>Email: ' . $valsAndErrs['email'] . ' </div>' . PHP_EOL;        
-    }
-    
+
     function displayForm($valsAndErrs) {
         
         echo '<h4>Vul uw gegevens in om te registreren</h4>' . PHP_EOL;
@@ -40,7 +29,7 @@
     }
 
 
-    function validation() {
+    function validateRegistration() {
         $name = $email = $pass = $passConfirm = '';
         $nameErr = $emailErr = $passErr = $passConfirmErr = '';
         $valid = false;

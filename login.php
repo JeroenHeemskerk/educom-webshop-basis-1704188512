@@ -4,14 +4,8 @@
         return $header;
     }
     
-    function showLoginContent() {
-        $valsAndErrs = validation();
-        if ($valsAndErrs['valid']) {
-            loginUser($valsAndErrs['username']);
-            header('Location: index.php');
-        } else {
-            displayForm($valsAndErrs);
-        }
+    function showLoginContent($valsAndErrs) {
+        displayForm($valsAndErrs);
     }
     
     function displayForm($valsAndErrs) {
@@ -32,8 +26,8 @@
     }
 
 
-    function validation() {
-        $email = $pass = $username = '';
+    function validateLogin() {
+        $email = $pass = $name = '';
         $emailErr = $passErr = '';
         $valid = false;
 
@@ -46,17 +40,17 @@
             }
             
             $pass = testInput(getPostVar("pass"));
-            $username = authorizeUser($email, $pass);
+            $name = authorizeUser($email, $pass);
             if (empty($pass)) {
                 $passErr = "Vul een wachtwoord in";
-            } elseif (empty($emailErr) && $username == NULL) {
+            } elseif (empty($emailErr) && $name == NULL) {
                 $passErr = "Ongeldig wachtwoord";
             }
             
             //update valid boolean after all error checking
             $valid = empty($nameErr) && empty($emailErr) && empty($passErr) && empty($passConfirmErr);
         }
-        $valsAndErrs = array('valid'=>$valid, 'email'=>$email, 'pass'=>$pass, 'username'=>$username,
+        $valsAndErrs = array('valid'=>$valid, 'email'=>$email, 'pass'=>$pass, 'name'=>$name,
                              'emailErr'=>$emailErr, 'passErr'=>$passErr);
         return $valsAndErrs;
     }
